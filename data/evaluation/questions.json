@@ -1,0 +1,23 @@
+
+[
+  {
+    "question": "What does the company develop?",
+    "expected_answer": "The company develops AI software for businesses.",
+    "expected_keywords": ["AI software", "businesses"]
+  },
+  {
+    "question": "Who uses the company's software?",
+    "expected_answer": "Customer support teams use the software to answer questions.",
+    "expected_keywords": ["customer support teams", "answer questions"]
+  },
+  {
+    "question": "How does the system find information?",
+    "expected_answer": "The system searches company documents for relevant information.",
+    "expected_keywords": ["searches company documents", "relevant information"]
+  },
+  {
+    "question": "Which programming language does the system use?",
+    "expected_answer": "The system uses Python to process documents and search for useful text.",
+    "expected_keywords": ["Python", "process documents"]
+  }
+]

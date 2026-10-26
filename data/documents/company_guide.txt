@@ -1,0 +1,4 @@
+Our company develops AI software for businesses.
+Our software helps customer support teams answer questions.
+The system searches company documents to find relevant information.
+The system uses Python to process documents and search for useful text.
