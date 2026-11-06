@@ -85,6 +85,6 @@ def save_results(evaluation_results):
 
 
 if __name__ == "__main__":
-    evaluation_results = evaluate_retrieval()
+    evaluation_results = evaluate_retrieval(top_k=4)
     save_results(evaluation_results)
     print("Evaluation code finished.")
