@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from src.rag import retrieve
-from generator import generate_answer
+from src.generator import generate_answer
 
 
 app = FastAPI(
