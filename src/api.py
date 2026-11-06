@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from rag import retrieve
 from generator import generate_answer
 
+
 app = FastAPI(
     title="RAG Document Assistant",
     description="An API for document-based question answering",
@@ -18,12 +19,14 @@ class QuestionRequest(BaseModel):
 @app.get("/")
 def home():
     return {
-        "message": "RAG Document Assistant API"
+        "message": "RAG Document Assistant API",
+        "status": "running",
     }
 
 
 @app.post("/ask")
 def ask_question(request: QuestionRequest):
+
     question = request.question.strip()
 
     if not question:
@@ -32,13 +35,24 @@ def ask_question(request: QuestionRequest):
             detail="Question cannot be empty",
         )
 
-    documents = retrieve(question)
-    result = generate_answer(question, documents)
+    try:
+        documents = retrieve(question)
 
-    return {
-        "question": question,
-        "retrieved_documents": documents,
-        "answer": result["answer"],
-        "prompt": result["prompt"],
-        "model_status": result["model_status"],
-    }
+        result = generate_answer(
+            question,
+            documents,
+        )
+
+        return {
+            "question": question,
+            "answer": result["answer"],
+            "retrieved_documents": documents,
+            "model_status": result["model_status"],
+            "model": result["model"],
+        }
+
+    except RuntimeError as error:
+        raise HTTPException(
+            status_code=502,
+            detail=str(error),
+        ) from error
