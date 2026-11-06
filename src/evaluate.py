@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
-
-from rag import retrieve
+from .rag import retrieve
 
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent
