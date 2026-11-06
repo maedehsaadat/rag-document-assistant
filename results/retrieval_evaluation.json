@@ -1,0 +1,110 @@
+{
+  "number_of_questions": 4,
+  "average_keyword_recall": 1.0,
+  "details": [
+    {
+      "question": "What does the company develop?",
+      "retrieved_documents": [
+        {
+          "text": "The system searches company documents to find relevant information",
+          "score": 0.142
+        },
+        {
+          "text": "Our company develops AI software for businesses",
+          "score": 0.142
+        },
+        {
+          "text": "The system uses Python to process documents and search for useful text",
+          "score": 0.0
+        },
+        {
+          "text": "Our software helps customer support teams answer questions",
+          "score": 0.0
+        }
+      ],
+      "matched_keywords": [
+        "ai software",
+        "businesses"
+      ],
+      "keyword_recall": 1.0
+    },
+    {
+      "question": "Who uses the company's software?",
+      "retrieved_documents": [
+        {
+          "text": "Our company develops AI software for businesses",
+          "score": 0.365
+        },
+        {
+          "text": "The system uses Python to process documents and search for useful text",
+          "score": 0.208
+        },
+        {
+          "text": "The system searches company documents to find relevant information",
+          "score": 0.178
+        },
+        {
+          "text": "Our software helps customer support teams answer questions",
+          "score": 0.142
+        }
+      ],
+      "matched_keywords": [
+        "customer support teams",
+        "answer questions"
+      ],
+      "keyword_recall": 1.0
+    },
+    {
+      "question": "How does the system find information?",
+      "retrieved_documents": [
+        {
+          "text": "The system searches company documents to find relevant information",
+          "score": 0.255
+        },
+        {
+          "text": "The system uses Python to process documents and search for useful text",
+          "score": 0.0
+        },
+        {
+          "text": "Our software helps customer support teams answer questions",
+          "score": 0.0
+        },
+        {
+          "text": "Our company develops AI software for businesses",
+          "score": 0.0
+        }
+      ],
+      "matched_keywords": [
+        "searches company documents",
+        "relevant information"
+      ],
+      "keyword_recall": 1.0
+    },
+    {
+      "question": "Which programming language does the system use?",
+      "retrieved_documents": [
+        {
+          "text": "The system uses Python to process documents and search for useful text",
+          "score": 0.0
+        },
+        {
+          "text": "The system searches company documents to find relevant information",
+          "score": 0.0
+        },
+        {
+          "text": "Our software helps customer support teams answer questions",
+          "score": 0.0
+        },
+        {
+          "text": "Our company develops AI software for businesses",
+          "score": 0.0
+        }
+      ],
+      "matched_keywords": [
+        "python",
+        "process documents"
+      ],
+      "keyword_recall": 1.0
+    }
+  ]
+}

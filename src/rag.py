@@ -1,5 +1,6 @@
 
 from pathlib import Path
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -10,6 +11,7 @@ DOCUMENT_PATH = PROJECT_DIR / "data" / "documents" / "company_guide.txt"
 
 def load_documents():
     """Load the project document and split it into sentences."""
+
     if not DOCUMENT_PATH.exists():
         raise FileNotFoundError(
             f"Document not found: {DOCUMENT_PATH}"
@@ -26,15 +28,14 @@ def load_documents():
     return sentences
 
 
-
 def retrieve(question, top_k=3):
     """Retrieve the most relevant sentences for a question."""
 
-    if not question.strip():
+    if not question or not question.strip():
         return []
 
-    if top_k < 1:
-        raise ValueError("top_k must be at least 1")
+    if not isinstance(top_k, int) or isinstance(top_k, bool) or top_k < 1:
+        raise ValueError("top_k must be a positive integer")
 
     sentences = load_documents()
 
@@ -42,6 +43,7 @@ def retrieve(question, top_k=3):
         return []
 
     vectorizer = TfidfVectorizer(stop_words="english")
+
     vectors = vectorizer.fit_transform(sentences + [question])
 
     similarities = cosine_similarity(
@@ -49,23 +51,36 @@ def retrieve(question, top_k=3):
         vectors[:-1]
     ).flatten()
 
-    top_indices = similarities.argsort()[::-1][:top_k]
+    ranked_indices = similarities.argsort()[::-1]
 
     results = []
 
-    for index in top_indices:
+    for index in ranked_indices:
+        score = float(similarities[index])
+
+        if score <= 0:
+            continue
+
         results.append({
             "text": sentences[index],
-            "score": round(float(similarities[index]), 3)
+            "score": round(score, 3)
         })
+
+        if len(results) >= top_k:
+            break
 
     return results
 
+
 if __name__ == "__main__":
     question = input("Ask a question: ").strip()
+
     results = retrieve(question)
 
     print("\nRetrieved sentences:")
+
+    if not results:
+        print("No relevant documents found.")
 
     for item in results:
         print(f"\nScore: {item['score']:.3f}")

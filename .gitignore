@@ -11,6 +11,7 @@ env/
 # Environment variables and secrets
 .env
 .env.*
+!.env.example
 
 # Test and coverage cache
 .pytest_cache/

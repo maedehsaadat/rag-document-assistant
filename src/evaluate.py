@@ -1,3 +1,4 @@
+
 import json
 from pathlib import Path
 from .rag import retrieve
@@ -14,23 +15,29 @@ RESULTS_DIR = PROJECT_DIR / "results"
 
 def load_questions():
     """Load evaluation questions from the JSON file."""
+
     with QUESTIONS_PATH.open("r", encoding="utf-8") as file:
         return json.load(file)
 
 
-def evaluate_retrieval(top_k=3):
+def evaluate_retrieval(top_k=4):
     """Evaluate retrieval using expected keywords."""
+
     questions = load_questions()
     results = []
 
     for item in questions:
         question = item["question"]
+
         expected_keywords = [
             keyword.lower()
             for keyword in item["expected_keywords"]
         ]
 
-        retrieved_documents = retrieve(question, top_k=top_k)
+        retrieved_documents = retrieve(
+            question,
+            top_k=top_k
+        )
 
         retrieved_text = " ".join(
             document["text"].lower()
@@ -70,7 +77,8 @@ def evaluate_retrieval(top_k=3):
 
 
 def save_results(evaluation_results):
-    """Save evaluation results as JSON."""
+    """Save retrieval evaluation results as JSON."""
+
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
     output_path = RESULTS_DIR / "retrieval_evaluation.json"
@@ -83,8 +91,18 @@ def save_results(evaluation_results):
             ensure_ascii=False,
         )
 
+    return output_path
+
 
 if __name__ == "__main__":
+
     evaluation_results = evaluate_retrieval(top_k=4)
-    save_results(evaluation_results)
-    print("Evaluation code finished.")
+
+    output_path = save_results(evaluation_results)
+
+    print("Retrieval evaluation completed.")
+    print(
+        "Average keyword recall:",
+        evaluation_results["average_keyword_recall"]
+    )
+    print("Results saved to:", output_path)

@@ -1,0 +1,124 @@
+{
+  "number_of_questions": 4,
+  "successful_generations": 4,
+  "failed_generations": 0,
+  "average_answer_keyword_recall": 0.625,
+  "details": [
+    {
+      "question": "What does the company develop?",
+      "expected_answer": "The company develops AI software for businesses.",
+      "generated_answer": "The company develops AI software for businesses.",
+      "retrieved_documents": [
+        {
+          "text": "The system searches company documents to find relevant information",
+          "score": 0.142
+        },
+        {
+          "text": "Our company develops AI software for businesses",
+          "score": 0.142
+        },
+        {
+          "text": "The system uses Python to process documents and search for useful text",
+          "score": 0.0
+        },
+        {
+          "text": "Our software helps customer support teams answer questions",
+          "score": 0.0
+        }
+      ],
+      "matched_keywords": [
+        "ai software",
+        "businesses"
+      ],
+      "answer_keyword_recall": 1.0,
+      "model_status": "connected",
+      "model": "openrouter/free"
+    },
+    {
+      "question": "Who uses the company's software?",
+      "expected_answer": "Customer support teams use the software to answer questions.",
+      "generated_answer": "\n\nBased on the provided context, the company's software is used by **customer support teams** (and businesses) to help them answer questions and search for relevant information in company documents.",
+      "retrieved_documents": [
+        {
+          "text": "Our company develops AI software for businesses",
+          "score": 0.365
+        },
+        {
+          "text": "The system uses Python to process documents and search for useful text",
+          "score": 0.208
+        },
+        {
+          "text": "The system searches company documents to find relevant information",
+          "score": 0.178
+        },
+        {
+          "text": "Our software helps customer support teams answer questions",
+          "score": 0.142
+        }
+      ],
+      "matched_keywords": [
+        "customer support teams",
+        "answer questions"
+      ],
+      "answer_keyword_recall": 1.0,
+      "model_status": "connected",
+      "model": "openrouter/free"
+    },
+    {
+      "question": "How does the system find information?",
+      "expected_answer": "The system searches company documents for relevant information.",
+      "generated_answer": "The system finds information by searching through company documents and using Python to process those documents and locate useful text.",
+      "retrieved_documents": [
+        {
+          "text": "The system searches company documents to find relevant information",
+          "score": 0.255
+        },
+        {
+          "text": "The system uses Python to process documents and search for useful text",
+          "score": 0.0
+        },
+        {
+          "text": "Our software helps customer support teams answer questions",
+          "score": 0.0
+        },
+        {
+          "text": "Our company develops AI software for businesses",
+          "score": 0.0
+        }
+      ],
+      "matched_keywords": [],
+      "answer_keyword_recall": 0.0,
+      "model_status": "connected",
+      "model": "openrouter/free"
+    },
+    {
+      "question": "Which programming language does the system use?",
+      "expected_answer": "The system uses Python to process documents and search for useful text.",
+      "generated_answer": "The system uses Python.",
+      "retrieved_documents": [
+        {
+          "text": "The system uses Python to process documents and search for useful text",
+          "score": 0.0
+        },
+        {
+          "text": "The system searches company documents to find relevant information",
+          "score": 0.0
+        },
+        {
+          "text": "Our software helps customer support teams answer questions",
+          "score": 0.0
+        },
+        {
+          "text": "Our company develops AI software for businesses",
+          "score": 0.0
+        }
+      ],
+      "matched_keywords": [
+        "python"
+      ],
+      "answer_keyword_recall": 0.5,
+      "model_status": "connected",
+      "model": "openrouter/free"
+    }
+  ]
+}

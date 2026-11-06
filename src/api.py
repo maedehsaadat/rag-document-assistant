@@ -1,5 +1,6 @@
+
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from src.rag import retrieve
 from src.generator import generate_answer
@@ -13,7 +14,11 @@ app = FastAPI(
 
 
 class QuestionRequest(BaseModel):
-    question: str
+    question: str = Field(
+        ...,
+        min_length=1,
+        description="Question to ask the document assistant",
+    )
 
 
 @app.get("/")

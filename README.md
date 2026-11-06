@@ -1,44 +1,86 @@
 # RAG Document Assistant
 
-A Python-based Retrieval-Augmented Generation (RAG) project designed to answer questions using information retrieved from documents.
+A document-based question-answering application built with Python, TF-IDF, FastAPI, and Large Language Models (LLMs).
 
-The project demonstrates a document retrieval pipeline, prompt construction for a language model, a FastAPI interface, and a basic retrieval evaluation workflow.
+The project implements a Retrieval-Augmented Generation (RAG) pipeline that retrieves relevant information from local documents and uses an LLM to generate context-grounded answers.
 
 ## Overview
 
-The system takes a user's question, searches a local document for relevant information, and prepares the retrieved content as context for question answering.
+RAG Document Assistant allows users to ask questions about a document and receive answers based on its content.
 
-The project is organized into modular components to make it easier to extend, evaluate, and integrate with a language model in the future.
+The system combines traditional information retrieval techniques with LLM-based answer generation, providing a lightweight and modular approach to document question answering.
 
 ## Features
 
-- **Document loading and preprocessing** from local text files
-- **TF-IDF-based retrieval** to identify relevant text passages
-- **Cosine similarity scoring** to rank retrieved passages
-- **Prompt construction** using the question and retrieved context
-- **FastAPI endpoints** for a question-answering interface
-- **Retrieval evaluation** using predefined questions and expected keywords
-- **Automated tests** for retrieval behavior and input validation
+- Document loading and text preprocessing
+- TF-IDF-based document retrieval
+- Cosine similarity for ranking relevant passages
+- Context-aware prompt construction
+- LLM integration through OpenRouter API
+- Context-grounded answer generation
+- FastAPI endpoint for question answering
+- Retrieval evaluation using keyword recall
+- Answer evaluation with predefined questions
+- Automated tests for retrieval functionality
 
-## Project Architecture
+## Architecture
+
+The application follows a modular RAG pipeline:
+
+```text
+User Question
+      |
+      v
+  FastAPI Endpoint
+      |
+      v
+ Document Retrieval
+ (TF-IDF + Cosine Similarity)
+      |
+      v
+ Retrieved Passages
+      |
+      v
+ Prompt Construction
+      |
+      v
+ OpenRouter LLM API
+      |
+      v
+ Generated Answer
+      |
+      v
+   API Response
+```
+
+## Project Structure
 
 ```text
 rag-document-assistant/
+│
 ├── data/
 │   ├── documents/
 │   │   └── company_guide.txt
 │   └── evaluation/
 │       └── questions.json
+│
+├── results/
+│   ├── answer_evaluation.json
+│   └── retrieval_evaluation.json
+│
 ├── src/
+│   ├── api.py
 │   ├── rag.py
 │   ├── generator.py
-│   ├── api.py
-│   └── evaluate.py
+│   ├── evaluate.py
+│   └── evaluate_answers.py
+│
 ├── tests/
 │   └── test_rag.py
-├── results/
-├── requirements.txt
+│
+├── .env.example
 ├── .gitignore
+├── requirements.txt
 └── README.md
 ```
 
@@ -46,82 +88,102 @@ rag-document-assistant/
 
 - Python
 - Scikit-learn
-- TF-IDF and cosine similarity
+- TF-IDF
+- Cosine Similarity
 - FastAPI
 - Pydantic
+- OpenAI Python SDK
+- OpenRouter API
 - Pytest
 - JSON
 
-## How It Works
+## Installation and Setup
 
-1. The document loader reads the source text.
-2. The text is split into smaller passages.
-3. TF-IDF converts the passages and user question into numerical representations.
-4. Cosine similarity is used to rank passages by relevance.
-5. The selected passages are combined with the question to construct a prompt.
-6. The API layer exposes an endpoint for submitting questions and returning retrieved context.
+Clone the repository:
 
-## Retrieval Example
+```bash
+git clone https://github.com/maedehsaadat/rag-document-assistant.git
+cd rag-document-assistant
+```
 
-**Example question:**
-
-`What does the company develop?`
-
-The retrieval component searches the sample company guide and returns ranked passages with similarity scores. This demonstrates the basic retrieval workflow before language-model integration.
-
-The current retrieval method is a lightweight baseline intended for experimentation and further improvement.
-
-## Language Model Integration
-
-The project includes a separate generation module that constructs a prompt from the retrieved passages and the user's question.
-
-The language model is not currently connected. The generation module therefore prepares the prompt but does not generate a final natural-language answer.
-
-## Evaluation and Testing
-
-The repository includes an evaluation script with predefined questions and expected keywords, as well as automated tests for retrieval behavior, result structure, and input validation.
-
-These components provide a starting point for measuring retrieval quality and maintaining the code as the project evolves.
-
-## Setup
-
-Install the dependencies:
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run the retrieval component from the project root:
+Create a `.env` file in the project root using `.env.example` as a template.
 
-```bash
-python src/rag.py
+Configure your OpenRouter credentials:
+
+```env
+OPENROUTER_API_KEY=your_openrouter_api_key
+OPENROUTER_MODEL=openrouter/free
 ```
 
-To use the API, the FastAPI application can be launched with:
+Replace the placeholder with your own API key.
+
+## Running the Application
+
+Start the FastAPI server:
 
 ```bash
-uvicorn api:app --app-dir src --reload
+py -m uvicorn src.api:app --reload
 ```
 
-The API command is provided for development and has not been verified in the current project environment.
+Open the interactive API documentation:
 
-## Current Status
+```text
+http://127.0.0.1:8000/docs
+```
 
-The TF-IDF retrieval component has been run locally with the sample document.
+## API Usage
 
-The repository also contains the prompt-generation module, API implementation, retrieval evaluation script, and automated tests. These additional components have been prepared in code but have not yet been fully executed and verified.
+**Endpoint:** `POST /ask`
 
-A language model has not been connected, so end-to-end question answering is not yet available.
+Example request:
 
-## Future Improvements
+```json
+{
+  "question": "What programming language is recommended?"
+}
+```
 
-- Integrate a local or hosted language model
-- Improve document chunking and retrieval quality
-- Add semantic search using embedding models
-- Evaluate retrieval with additional questions and documents
-- Verify API behavior and automated tests
-- Add support for multiple documents and file formats
+Example response:
 
-## Project Goal
+```json
+{
+  "question": "What programming language is recommended?",
+  "answer": "Python",
+  "retrieved_documents": [
+    {
+      "text": "Python is the programming language used by the system for document processing and information retrieval",
+      "score": 0.273
+    }
+  ],
+  "model_status": "connected",
+  "model": "openrouter/free"
+}
+```
 
-This project explores the core components of a document question-answering application and provides a modular foundation for further development of a complete RAG pipeline.
+## Evaluation
+
+The project includes separate evaluation scripts for retrieval and answer generation.
+
+**Retrieval Evaluation**
+
+- Uses predefined questions and expected keywords.
+- Measures keyword recall across retrieved passages.
+- Saves evaluation results to `results/retrieval_evaluation.json`.
+
+**Answer Evaluation**
+
+- Evaluates generated answers against predefined evaluation questions.
+- Saves evaluation results to `results/answer_evaluation.json`.
+
+## Project Status
+
+The application has been executed locally and its main question-answering API has been successfully tested.
+
+The implementation demonstrates an end-to-end RAG workflow, from document retrieval to LLM-based answer generation through OpenRouter.
+

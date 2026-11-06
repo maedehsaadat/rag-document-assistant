@@ -1,12 +1,22 @@
+
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
-from openai import OpenAI, APIError
+from openai import (
+    OpenAI,
+    APIError,
+    APIConnectionError,
+    APITimeoutError,
+)
 
 
-load_dotenv()
+PROJECT_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(PROJECT_DIR / ".env")
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+
 OPENROUTER_MODEL = os.getenv(
     "OPENROUTER_MODEL",
     "openrouter/free"
@@ -46,6 +56,9 @@ Answer:
 def generate_answer(question, retrieved_documents):
     """Generate an answer using OpenRouter LLM API."""
 
+    if not question or not question.strip():
+        raise ValueError("Question must not be empty.")
+
     prompt = build_prompt(question, retrieved_documents)
 
     if not retrieved_documents:
@@ -64,6 +77,8 @@ def generate_answer(question, retrieved_documents):
     client = OpenAI(
         api_key=OPENROUTER_API_KEY,
         base_url="https://openrouter.ai/api/v1",
+        timeout=30.0,
+        max_retries=2,
     )
 
     try:
@@ -73,8 +88,9 @@ def generate_answer(question, retrieved_documents):
                 {
                     "role": "system",
                     "content": (
-                        "You are a helpful assistant that answers "
-                        "questions strictly using provided documents."
+                        "You are a document-based question answering "
+                        "assistant. Answer strictly using the provided "
+                        "context. Never invent information."
                     ),
                 },
                 {
@@ -89,11 +105,25 @@ def generate_answer(question, retrieved_documents):
         answer = response.choices[0].message.content
 
         return {
-            "answer": answer or "The model returned an empty response.",
+            "answer": (
+                answer.strip()
+                if answer and answer.strip()
+                else "The model returned an empty response."
+            ),
             "prompt": prompt,
             "model_status": "connected",
             "model": OPENROUTER_MODEL,
         }
+
+    except APITimeoutError as error:
+        raise RuntimeError(
+            "OpenRouter request timed out."
+        ) from error
+
+    except APIConnectionError as error:
+        raise RuntimeError(
+            "Could not connect to OpenRouter."
+        ) from error
 
     except APIError as error:
         raise RuntimeError(
